@@ -1,0 +1,29 @@
+# Збірка
+ConstructionCompany/bin/
+ConstructionCompany/obj/
+
+# Visual Studio службові файли
+.vs/
+
+# Файли бази даних LocalDB / SQL Server
+*.mdf
+*.ldf
+*.ndf
+
+# Користувацькі налаштування проєкту
+*.user
+*.suo
+
+# Клієнтські бібліотеки (відновлюються через LibMan)
+ConstructionCompany/wwwroot/lib/
+
+# NuGet-пакети (відновлюються через restore)
+# packages/
+
+# Логи
+*.log
+
+# моє
+Assorti/
+installer/publish/
+installer/Output/
