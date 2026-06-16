@@ -1,0 +1,111 @@
+@page
+@model ConstructionCompany.Pages.Admin.UsersModel
+@{
+    ViewData["Title"] = "Покупці";
+}
+
+<div class="container py-4">
+
+    <h2 class="fw-bold mb-4">Покупці</h2>
+
+    @* ── Блок з тимчасовим паролем ────────────────────────────── *@
+    @if (!string.IsNullOrEmpty(Model.TempPassword))
+    {
+        <div class="alert alert-warning d-flex align-items-center gap-3 mb-4">
+            <i class="bi bi-key-fill fs-4"></i>
+            <div>
+                <div class="fw-bold">Пароль скинуто успішно</div>
+                <div class="small">
+                    Тимчасовий пароль для користувача:
+                    <code class="fs-6 ms-2 user-select-all">@Model.TempPassword</code>
+                </div>
+                <div class="small text-muted mt-1">
+                    Повідомте користувача — після входу він зможе
+                    змінити пароль у особистому кабінеті
+                </div>
+            </div>
+        </div>
+    }
+
+    @* ── Таблиця користувачів ──────────────────────────────────── *@
+    <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>ПІБ</th>
+                        <th>Email</th>
+                        <th>Телефон</th>
+                        <th>Дата реєстрації</th>
+                        <th>Статус</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.Users)
+                    {
+                        var isReset = Model.ResetUserId == user.Id;
+                        var confirmBlock = user.IsBlocked
+                        ? $"Розблокувати користувача {user.FullName}?"
+                        : $"Заблокувати користувача {user.FullName}?";
+                        var confirmReset =
+                        $"Скинути пароль для {user.FullName}? Буде згенеровано тимчасовий пароль.";
+                        
+                        <tr class="@(isReset ? "table-warning" : "")">
+                            <td class="fw-semibold">@user.FullName</td>
+                            <td>@user.Email</td>
+                            <td>@(user.Phone ?? "—")</td>
+                            <td class="text-muted small">
+                                @user.CreatedAt.ToString("dd.MM.yyyy")
+                            </td>
+                            <td>
+                                @if (user.IsBlocked)
+                                {
+                                    <span class="badge bg-danger">Заблокований</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">Активний</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+
+                                    @* Блокування *@
+                                    <form method="post"
+                                          asp-page-handler="ToggleBlock"
+                                          onsubmit="return confirm('@confirmBlock')">
+                                        <input type="hidden" name="id"
+                                               value="@user.Id" />
+                                        <button type="submit"
+                                                class="btn btn-sm @(user.IsBlocked
+                                                    ? "btn-outline-success"
+                                                    : "btn-outline-danger")">
+                                            @(user.IsBlocked
+                                                ? "Розблокувати"
+                                                : "Заблокувати")
+                                        </button>
+                                    </form>
+
+                                    @* Скидання пароля *@
+                                    <form method="post"
+                                          asp-page-handler="ResetPassword"
+                                          onsubmit="return confirm('@confirmReset')">
+                                        <input type="hidden" name="id"
+                                               value="@user.Id" />
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-warning">
+                                            <i class="bi bi-key"></i> Скинути пароль
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

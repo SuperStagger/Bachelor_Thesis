@@ -1,0 +1,99 @@
+@page "{id:int}"
+@model ConstructionCompany.Pages.Bookings.CreateModel
+@{
+    ViewData["Title"] = "Подати заявку";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+
+            <a href="/Objects/Details/@Model.Object.Id"
+               class="btn btn-outline-secondary btn-sm mb-4">
+                ← Назад до об'єкту
+            </a>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+
+                    <h3 class="fw-bold mb-1">Подати заявку</h3>
+                    <p class="text-muted mb-4">
+                        Об'єкт: <strong>@Model.Object.Title</strong>
+                    </p>
+
+                    <form method="post">
+
+                        @* Тип заявки *@
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Тип заявки</label>
+                            <div class="d-flex gap-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio"
+                                           name="BookingType" value="Consultation"
+                                           id="typeConsult"
+                                           checked="@(Model.BookingType == "Consultation")" />
+                                    <label class="form-check-label" for="typeConsult">
+                                        Консультація
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio"
+                                           name="BookingType" value="Purchase"
+                                           id="typePurchase"
+                                           checked="@(Model.BookingType == "Purchase")" />
+                                    <label class="form-check-label" for="typePurchase">
+                                        Придбання
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        @* Бажана дата *@
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                Бажана дата контакту
+                            </label>
+                            <input type="text" name="PreferredDate" class="form-control" placeholder="дд.мм.рррр" />
+                            <div class="form-text">Необов'язково</div>
+                        </div>
+
+                        @* Коментар *@
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Коментар
+                            </label>
+                            <textarea name="Comment" class="form-control" rows="4"
+                                      placeholder="Вкажіть додаткову інформацію або запитання...">@Model.Comment</textarea>
+                            <div class="form-text">Необов'язково</div>
+                        </div>                                                                                                  
+
+                        @* Інформація про об'єкт *@
+                        <div class="alert alert-light border mb-4">
+                            <div class="row g-2 small">
+                                <div class="col-6">
+                                    <span class="text-muted">Адреса:</span><br />
+                                    <strong>@Model.Object.Address</strong>
+                                </div>
+                                <div class="col-3">
+                                    <span class="text-muted">Площа:</span><br />
+                                    <strong>@Model.Object.Area м²</strong>
+                                </div>
+                                <div class="col-3">
+                                    <span class="text-muted">Ціна:</span><br />
+                                    <strong>@Model.Object.Price.ToString("N0") грн</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-send"></i> Надіслати заявку
+                        </button>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

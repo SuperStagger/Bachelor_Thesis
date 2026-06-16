@@ -1,0 +1,100 @@
+@page
+@model ConstructionCompany.Pages.Cabinet.EditModel
+@{
+    ViewData["Title"] = "Редагування профілю";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <a href="/Cabinet/Index" class="btn btn-outline-secondary btn-sm mb-4">
+                ← Назад до кабінету
+            </a>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+
+                    <h3 class="fw-bold mb-4">Редагування профілю</h3>
+
+                    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+                    {
+                        <div class="alert alert-success">
+                            <i class="bi bi-check-circle"></i>
+                            @Model.SuccessMessage
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger">
+                            <i class="bi bi-exclamation-circle"></i>
+                            @Model.ErrorMessage
+                        </div>
+                    }
+
+                    <form method="post">
+
+                        <h6 class="fw-semibold text-muted mb-3">Особисті дані</h6>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Прізвище *</label>
+                                <input type="text" name="LastName" class="form-control"
+                                       value="@Model.LastName" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Ім'я *</label>
+                                <input type="text" name="FirstName" class="form-control"
+                                       value="@Model.FirstName" required />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">По-батькові</label>
+                                <input type="text" name="MiddleName" class="form-control"
+                                       value="@Model.MiddleName" />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Телефон</label>
+                                <input type="tel" name="Phone" class="form-control"
+                                       value="@Model.Phone"
+                                       placeholder="+380XXXXXXXXX" />
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <h6 class="fw-semibold text-muted mb-3">
+                            Зміна пароля
+                            <small class="fw-normal">(залиште порожнім якщо не змінюєте)</small>
+                        </h6>
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label">Поточний пароль</label>
+                                <input type="password" name="CurrentPassword"
+                                       class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Новий пароль</label>
+                                <input type="password" name="NewPassword"
+                                       class="form-control" minlength="6" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Повторіть новий пароль</label>
+                                <input type="password" name="ConfirmNewPassword"
+                                       class="form-control" minlength="6" />
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mt-4">
+                            <i class="bi bi-check-lg"></i> Зберегти зміни
+                        </button>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

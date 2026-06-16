@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — Basis Development</title>
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <!-- Google Fonts: Playfair Display + Mulish -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Mulish:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet" />
+
+    <style>
+        /* ── CSS змінні ─────────────────────────────────────── */
+        :root {
+            --bd-navy:       #0B1F3A;
+            --bd-navy-light: #162D4F;
+            --bd-gold:       #C9A84C;
+            --bd-gold-light: #E2C97E;
+            --bd-cream:      #F8F5EF;
+            --bd-gray:       #6B7280;
+            --bd-border:     #E5E0D5;
+            --font-display:  'Playfair Display', serif;
+            --font-body:     'Mulish', sans-serif;
+        }
+
+        /* ── База ───────────────────────────────────────────── */
+        * { box-sizing: border-box; }
+        body {
+            font-family: var(--font-body);
+            background: var(--bd-cream);
+            color: #1a1a2e;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        h1, h2, h3 { font-family: var(--font-display); }
+        main { flex: 1; }
+
+        /* ── Навбар ─────────────────────────────────────────── */
+        .bd-navbar {
+            background: var(--bd-navy);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,.25);
+        }
+        .bd-navbar .navbar-brand {
+            padding: 10px 0;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 10px;
+            line-height: 1;
+        }
+        .bd-navbar .brand-name {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: .02em;
+            display: block;
+        }
+        .bd-navbar .brand-name span {
+            color: var(--bd-gold);
+        }
+        .bd-navbar .brand-slogan {
+            font-size: 10px;
+            color: rgba(255,255,255,.45);
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-top: 3px;
+            display: block;
+        }
+        .bd-navbar .nav-link {
+            color: rgba(255,255,255,.75) !important;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: .04em;
+            padding: 8px 14px !important;
+            border-radius: 4px;
+            transition: color .2s, background .2s;
+        }
+        .bd-navbar .nav-link:hover {
+            color: var(--bd-gold) !important;
+            background: rgba(201,168,76,.08);
+        }
+        .bd-navbar .nav-link.active {
+            color: var(--bd-gold) !important;
+        }
+        .bd-navbar .btn-nav-cta {
+            background: var(--bd-gold);
+            color: var(--bd-navy) !important;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 7px 18px !important;
+            border-radius: 4px;
+            transition: background .2s;
+        }
+        .bd-navbar .btn-nav-cta:hover {
+            background: var(--bd-gold-light);
+        }
+        .bd-navbar .user-badge {
+            background: rgba(201,168,76,.15);
+            border: 1px solid rgba(201,168,76,.3);
+            border-radius: 4px;
+            padding: 5px 12px;
+            font-size: 12px;
+            color: var(--bd-gold) !important;
+            font-weight: 600;
+        }
+        .bd-navbar .divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255,255,255,.15);
+            margin: 0 8px;
+            align-self: center;
+        }
+        .navbar-toggler {
+            border-color: rgba(255,255,255,.3) !important;
+        }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+        }
+
+        /* ── Золота смужка під навбаром ─────────────────────── */
+        .bd-topline {
+            height: 3px;
+            background: linear-gradient(90deg,
+                var(--bd-navy) 0%,
+                var(--bd-gold) 40%,
+                var(--bd-gold-light) 60%,
+                var(--bd-navy) 100%);
+        }
+
+        /* ── Картки об'єктів ────────────────────────────────── */
+        .property-card {
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,.06);
+            transition: transform .25s, box-shadow .25s;
+            background: #fff;
+        }
+        .property-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,.12);
+        }
+        .property-card .card-img-top {
+            height: 210px;
+            object-fit: cover;
+        }
+        .property-card .price {
+            font-family: var(--font-display);
+            font-size: 22px;
+            color: var(--bd-navy);
+        }
+
+        /* ── Кнопки ─────────────────────────────────────────── */
+        .btn-primary {
+            background: var(--bd-navy);
+            border-color: var(--bd-navy);
+            font-weight: 600;
+            letter-spacing: .03em;
+        }
+        .btn-primary:hover {
+            background: var(--bd-navy-light);
+            border-color: var(--bd-navy-light);
+        }
+        .btn-gold {
+            background: var(--bd-gold);
+            border-color: var(--bd-gold);
+            color: var(--bd-navy);
+            font-weight: 700;
+        }
+        .btn-gold:hover {
+            background: var(--bd-gold-light);
+            border-color: var(--bd-gold-light);
+            color: var(--bd-navy);
+        }
+        .btn-outline-primary {
+            border-color: var(--bd-navy);
+            color: var(--bd-navy);
+            font-weight: 600;
+        }
+        .btn-outline-primary:hover {
+            background: var(--bd-navy);
+            border-color: var(--bd-navy);
+        }
+
+        /* ── Бейджі статусів ────────────────────────────────── */
+        .status-available {
+            background: #D1FAE5;
+            color: #065F46;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+        .status-reserved {
+            background: #FEF3C7;
+            color: #92400E;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+        .status-sold {
+            background: #F3F4F6;
+            color: #6B7280;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+        .status-hidden {
+            background: #FEE2E2;
+            color: #991B1B;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        /* ── Картки адмін-панелі ────────────────────────────── */
+        .stat-card {
+            border: none;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(0,0,0,.06);
+            padding: 24px;
+            border-left: 4px solid var(--bd-gold);
+        }
+        .stat-card .stat-num {
+            font-family: var(--font-display);
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--bd-navy);
+            line-height: 1;
+        }
+        .stat-card .stat-label {
+            font-size: 13px;
+            color: var(--bd-gray);
+            margin-top: 4px;
+            letter-spacing: .04em;
+        }
+
+        /* ── Форми ──────────────────────────────────────────── */
+        .form-control, .form-select {
+            border-color: var(--bd-border);
+            border-radius: 6px;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--bd-gold);
+            box-shadow: 0 0 0 3px rgba(201,168,76,.15);
+        }
+        .card {
+            border-color: var(--bd-border);
+            border-radius: 8px;
+        }
+
+        /* ── Футер ──────────────────────────────────────────── */
+        .bd-footer {
+            background: var(--bd-navy);
+            color: rgba(255,255,255,.6);
+            padding: 40px 0 20px;
+            margin-top: auto;
+        }
+        .bd-footer .footer-brand {
+            font-family: var(--font-display);
+            font-size: 22px;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .bd-footer .footer-brand span { color: var(--bd-gold); }
+        .bd-footer .footer-slogan {
+            font-size: 12px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,.35);
+            margin-bottom: 16px;
+        }
+        .bd-footer a {
+            color: rgba(255,255,255,.55);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color .2s;
+        }
+        .bd-footer a:hover { color: var(--bd-gold); }
+        .bd-footer .footer-divider {
+            border-color: rgba(255,255,255,.1);
+            margin: 24px 0 16px;
+        }
+        .bd-footer .footer-copy {
+            font-size: 12px;
+            color: rgba(255,255,255,.3);
+        }
+        .bd-footer .gold-line {
+            width: 40px;
+            height: 2px;
+            background: var(--bd-gold);
+            margin-bottom: 16px;
+        }
+    </style>
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+
+<body>
+
+    <!-- ── Золота смужка ──────────────────────────────────── -->
+    <div class="bd-topline"></div>
+
+    <!-- ── Навбар ─────────────────────────────────────────── -->
+    <nav class="navbar navbar-expand-lg bd-navbar">
+        <div class="container">
+
+            <!-- Логотип -->
+            <a class="navbar-brand" href="/">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 56 80" height="32" width="22"
+                     style="flex-shrink:0;"
+                     role="presentation">
+                    <defs>
+                        <linearGradient id="gNav" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%"   style="stop-color:#E2C97E"/>
+                            <stop offset="50%"  style="stop-color:#C9A84C"/>
+                            <stop offset="100%" style="stop-color:#A8882A"/>
+                        </linearGradient>
+                    </defs>
+                    <rect x="0"  y="74" width="56" height="6"  rx="1.5" fill="url(#gNav)"/>
+                    <rect x="6"  y="63" width="44" height="5"  rx="1"   fill="url(#gNav)" opacity="0.9"/>
+                    <rect x="8"  y="32" width="9"  height="31" rx="1.5" fill="url(#gNav)" opacity="0.85"/>
+                    <rect x="24" y="20" width="12" height="43" rx="1.5" fill="url(#gNav)"/>
+                    <rect x="40" y="32" width="9"  height="31" rx="1.5" fill="url(#gNav)" opacity="0.85"/>
+                    <rect x="6"  y="28" width="13" height="5"  rx="1"   fill="url(#gNav)"/>
+                    <rect x="22" y="15" width="16" height="6"  rx="1"   fill="url(#gNav)"/>
+                    <rect x="38" y="28" width="13" height="5"  rx="1"   fill="url(#gNav)"/>
+                    <polygon points="30,2 18,16 42,16" fill="url(#gNav)" opacity="0.95"/>
+                </svg>
+                <div>
+                    <span class="brand-name">
+                        Basis <span>Development</span>
+                    </span>
+                    <span class="brand-slogan">Надійність у кожному проекті</span>
+                </div>
+            </a>
+
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarMain">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav me-auto gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Objects">
+                            <i class="bi bi-building me-1"></i>Каталог
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Projects">
+                            <i class="bi bi-award me-1"></i>Наші проекти
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/About">
+                            <i class="bi bi-info-circle me-1"></i>Про компанію
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav align-items-center gap-1">
+                    @{
+                        var userId   = Context.Session.GetInt32("UserId");
+                        var userRole = Context.Session.GetString("UserRole");
+                        var userName = Context.Session.GetString("UserName");
+                    }
+
+                    @if (userId == null)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Account/Login">Вхід</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn-nav-cta" href="/Account/Register">
+                                Реєстрація
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        @if (userRole == "Admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link user-badge" href="/Admin/Index">
+                                    <i class="bi bi-shield-check me-1"></i>@userName
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Admin/Index">
+                                    Адмін-панель
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            var unread = Context.Session.GetInt32("UnreadCount");
+                            <li class="nav-item">
+                                <a class="nav-link user-badge" href="/Cabinet/Index">
+                                    <i class="bi bi-person me-1"></i>@userName
+                                    @if (unread > 0)
+                                    {
+                                        <span class="badge bg-danger ms-1"
+                                              style="font-size:10px;padding:2px 6px;">
+                                            @unread
+                                        </span>
+                                    }
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Cabinet/Notifications"
+                                   title="Сповіщення"
+                                   style="padding:8px 10px !important;">
+                                    @if (unread > 0)
+                                    {
+                                        <i class="bi bi-bell-fill text-warning"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-bell"></i>
+                                    }
+                                </a>
+                            </li>
+                        }
+                        <li class="nav-item d-none d-lg-block">
+                            <span class="divider"></span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Account/Logout"
+                               style="color:rgba(255,255,255,.45) !important;font-size:12px;">
+                                <i class="bi bi-box-arrow-right"></i> Вийти
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- ── Основний вміст ──────────────────────────────────── -->
+    <main>
+        @RenderBody()
+    </main>
+
+    <!-- ── Футер ───────────────────────────────────────────── -->
+    <footer class="bd-footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="footer-brand">
+                        Basis <span>Development</span>
+                    </div>
+                    <div class="footer-slogan">Надійність у кожному проекті</div>
+                    <p style="font-size:13px;line-height:1.7;">
+                        Будівельна компанія з багаторічним досвідом. Зводимо
+                        житлові та комерційні об'єкти найвищої якості.
+                    </p>
+                </div>
+                <div class="col-md-2 offset-md-2">
+                    <div class="gold-line"></div>
+                    <div style="font-size:12px;font-weight:700;color:#fff;
+                                letter-spacing:.08em;text-transform:uppercase;
+                                margin-bottom:12px;">
+                        Навігація
+                    </div>
+                    <div class="d-flex flex-column gap-2">
+                        <a href="/">Головна</a>
+                        <a href="/Objects">Каталог</a>
+                        <a href="/Projects">Наші проекти</a>
+                        <a href="/About">Про компанію</a>
+                        <a href="/Account/Register">Реєстрація</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="gold-line"></div>
+                    <div style="font-size:12px;font-weight:700;color:#fff;
+                                letter-spacing:.08em;text-transform:uppercase;
+                                margin-bottom:12px;">
+                        Контакти
+                    </div>
+                    <div class="d-flex flex-column gap-2" style="font-size:13px;">
+                        <span>
+                            <i class="bi bi-geo-alt me-2" style="color:var(--bd-gold)"></i>
+                            м. Черкаси, вул. Хрещатик, 1
+                        </span>
+                        <span>
+                            <i class="bi bi-telephone me-2" style="color:var(--bd-gold)"></i>
+                            +38 (050) 000-00-00
+                        </span>
+                        <span>
+                            <i class="bi bi-envelope me-2" style="color:var(--bd-gold)"></i>
+                            info@basis-dev.ua
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="footer-divider" />
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div class="footer-copy">
+                    © 2026 Basis Development. Всі права захищено.
+                </div>
+                <div class="footer-copy">
+                    Розроблено як дипломний проект · ЧДТУ · КН-22
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ── Scripts ─────────────────────────────────────────── -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

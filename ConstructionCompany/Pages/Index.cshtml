@@ -1,0 +1,332 @@
+@page
+@model ConstructionCompany.Pages.IndexModel
+@{
+    ViewData["Title"] = "Головна";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/home.css" />
+}
+
+<section class="hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 hero-content">
+
+                <div class="hero-eyebrow">
+                    Будівельна компанія
+                </div>
+
+                <h1>
+                    Знайдіть своє<br />
+                    ідеальне <em>житло</em>
+                </h1>
+
+                <p class="hero-desc">
+                    Basis Development — ваш надійний партнер у придбанні
+                    нерухомості. Квартири, будинки та комерційні приміщення
+                    від перевіреного забудовника.
+                </p>
+
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="/Objects" class="btn btn-gold btn-lg px-4">
+                        <i class="bi bi-building me-2"></i>
+                        Переглянути каталог
+                    </a>
+                    <a href="/Account/Register"
+                       class="btn btn-outline-light btn-lg px-4">
+                        Зареєструватись
+                    </a>
+                </div>
+
+                <div class="hero-stats">
+                    <div>
+                        <div class="hero-stat-num">
+                            @(Model.TotalObjects+25)<span>+</span>
+                        </div>
+                        <div class="hero-stat-label">Об'єктів</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-num">8<span>+</span></div>
+                        <div class="hero-stat-label">Років досвіду</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-num">500<span>+</span></div>
+                        <div class="hero-stat-label">Задоволених клієнтів</div>
+                    </div>
+                </div>
+
+            </div>
+
+            @* ── Hero-карточки з реальними даними ── *@
+            <div class="col-lg-5 offset-lg-1 d-none d-lg-block">
+                <div class="hero-visual">
+
+                    @if (Model.LatestObject != null)
+                    {
+                        @* Карточка останнього об'єкту *@
+                        <div class="hero-card-float hcf-1">
+                            <div class="hcf-label">Нова пропозиція</div>
+                            <div class="hcf-value">
+                                @(Model.LatestObject.Title.Length > 28
+                                    ? Model.LatestObject.Title.Substring(0, 28) + "…"
+                                    : Model.LatestObject.Title)
+                            </div>
+                            <div class="hcf-sub">
+                                @Model.LatestObject.Area м²
+                                @if (Model.LatestObject.Rooms.HasValue)
+                                {
+                                    <span> · @Model.LatestObject.Rooms кімн.</span>
+                                }
+                            </div>
+                        </div>
+
+                        @* Карточка ціни *@
+                        <div class="hero-card-float hcf-2">
+                            <div class="hcf-label">Ціна</div>
+                            <div class="hcf-value">@Model.LatestObject.PriceDisplay</div>
+                            <div class="hcf-sub">
+                                @Model.LatestObject.BuildingStatusDisplay
+                            </div>
+                        </div>
+
+                        @* Карточка адреси *@
+                        <div class="hero-card-float hcf-3">
+                            <div class="hcf-label">Розташування</div>
+                            <div class="hcf-value" style="font-size:16px;">
+                                @(Model.LatestObject.Address.Length > 30
+                                    ? Model.LatestObject.Address.Substring(0, 30) + "…"
+                                    : Model.LatestObject.Address)
+                            </div>
+                            <div class="hcf-sub">
+                                <a href="/Objects/Details/@Model.LatestObject.Id"
+                                   style="color:var(--bd-gold);text-decoration:none;">
+                                    Переглянути →
+                                </a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        @* Заглушка якщо об'єктів ще немає *@
+                        <div class="hero-card-float hcf-1">
+                            <div class="hcf-label">Basis Development</div>
+                            <div class="hcf-value">Нові об'єкти</div>
+                            <div class="hcf-sub">Незабаром у каталозі</div>
+                        </div>
+                        <div class="hero-card-float hcf-2">
+                            <div class="hcf-label">Будівництво</div>
+                            <div class="hcf-value">В процесі</div>
+                            <div class="hcf-sub">Слідкуйте за оновленнями</div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@* ── Featured об'єкти ───────────────────────────────────────── *@
+@if (Model.FeaturedObjects.Any())
+{
+    <section style="padding:80px 0;background:var(--bd-cream);">
+        <div class="container">
+
+            <div class="text-center mb-5">
+                <div style="font-size:12px;letter-spacing:.15em;text-transform:uppercase;
+                            color:var(--bd-gold);font-weight:700;margin-bottom:12px;">
+                    Наші пропозиції
+                </div>
+                <h2 style="font-size:clamp(26px,4vw,40px);color:var(--bd-navy);">
+                    Обрані об'єкти
+                </h2>
+                <p style="color:var(--bd-gray);font-size:15px;
+                           max-width:480px;margin:8px auto 0;">
+                    Найкращі пропозиції від Basis Development —
+                    обрані нашими менеджерами спеціально для вас
+                </p>
+            </div>
+
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                @foreach (var obj in Model.FeaturedObjects)
+                {
+                    <div class="col">
+                        <div class="property-card card h-100">
+
+                            <div style="position:relative;overflow:hidden;">
+                                @if (obj.MainPhoto != null)
+                                {
+                                    <img src="@obj.MainPhoto.FilePath"
+                                         class="card-img-top"
+                                         style="height:220px;object-fit:cover;
+                                                transition:transform .3s;"
+                                         alt="@obj.MainPhoto.AltText"
+                                         onmouseover="this.style.transform='scale(1.04)'"
+                                         onmouseout="this.style.transform='scale(1)'" />
+                                }
+                                else
+                                {
+                                    <div class="bg-light d-flex align-items-center
+                                                justify-content-center"
+                                         style="height:220px;">
+                                        <i class="bi bi-image text-muted fs-1"></i>
+                                    </div>
+                                }
+                                <div style="position:absolute;top:12px;right:12px;
+                                            background:var(--bd-gold);border-radius:50%;
+                                            width:32px;height:32px;
+                                            display:flex;align-items:center;
+                                            justify-content:center;
+                                            box-shadow:0 2px 8px rgba(0,0,0,.2);">
+                                    <i class="bi bi-star-fill"
+                                       style="color:var(--bd-navy);font-size:14px;"></i>
+                                </div>
+                            </div>
+
+                            <div class="card-body d-flex flex-column p-3">
+
+                                <div class="d-flex gap-1 mb-2 flex-wrap">
+                                    <span class="badge @obj.BuildingStatusBadgeClass"
+                                          style="font-size:11px;">
+                                        @obj.BuildingStatusDisplay
+                                    </span>
+                                    @if (obj.SaleStatus == "Reserved")
+                                    {
+                                        <span class="badge bg-warning text-dark"
+                                              style="font-size:11px;">
+                                            Зарезервований
+                                        </span>
+                                    }
+                                </div>
+
+                                <h5 class="card-title fw-bold mb-1"
+                                    style="color:var(--bd-navy);font-size:16px;">
+                                    @obj.Title
+                                </h5>
+
+                                <p class="text-muted small mb-2">
+                                    <i class="bi bi-geo-alt me-1"></i>@obj.Address
+                                </p>
+
+                                <div class="d-flex gap-3 small text-muted mb-2">
+                                    @if (obj.Area > 0)
+                                    {
+                                        <span>
+                                            <i class="bi bi-aspect-ratio me-1"></i>
+                                            @obj.Area м²
+                                        </span>
+                                    }
+                                    @if (obj.Rooms.HasValue)
+                                    {
+                                        <span>
+                                            <i class="bi bi-door-open me-1"></i>
+                                            @obj.Rooms кімн.
+                                        </span>
+                                    }
+                                    @if (obj.Floor.HasValue)
+                                    {
+                                        <span>
+                                            <i class="bi bi-layers me-1"></i>
+                                            @obj.Floor/@obj.TotalFloors пов.
+                                        </span>
+                                    }
+                                </div>
+
+                                @if (obj.DateDisplay != null)
+                                {
+                                    <p class="small mb-2"
+                                       style="color:var(--bd-gold);font-weight:600;">
+                                        <i class="bi bi-calendar3 me-1"></i>
+                                        @obj.DateDisplay
+                                    </p>
+                                }
+
+                                <div class="mt-auto">
+                                    <p class="fw-bold mb-2"
+                                       style="font-family:var(--font-display);
+                                              font-size:20px;color:var(--bd-navy);">
+                                        @obj.PriceDisplay
+                                    </p>
+                                    <a href="/Objects/Details/@obj.Id"
+                                       class="btn btn-primary btn-sm w-100">
+                                        Детальніше →
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="/Objects" class="btn btn-outline-primary btn-lg px-5">
+                    <i class="bi bi-grid me-2"></i>
+                    Переглянути весь каталог
+                </a>
+            </div>
+
+        </div>
+    </section>
+}
+
+@* ── Переваги ─────────────────────────────────────────────────── *@
+<section style="padding:80px 0;background:#fff;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <div style="font-size:12px;letter-spacing:.15em;text-transform:uppercase;
+                        color:var(--bd-gold);font-weight:700;margin-bottom:12px;">
+                Чому обирають нас
+            </div>
+            <h2 style="font-size:clamp(28px,4vw,42px);color:var(--bd-navy);">
+                Надійність у кожній деталі
+            </h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
+                <div class="feature-title">Юридична чистота</div>
+                <p class="feature-desc">
+                    Всі об'єкти пройшли юридичну перевірку.
+                    Повний супровід угоди від першого перегляду до ключів.
+                </p>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-icon"><i class="bi bi-camera"></i></div>
+                <div class="feature-title">Реальні фотографії</div>
+                <p class="feature-desc">
+                    Тільки актуальні фото від наших фотографів.
+                    Жодних стокових зображень або введення в оману.
+                </p>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-icon"><i class="bi bi-headset"></i></div>
+                <div class="feature-title">Особистий менеджер</div>
+                <p class="feature-desc">
+                    Ваш менеджер відповість на всі запитання та організує
+                    перегляд у зручний для вас час.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* ── CTA ──────────────────────────────────────────────────────── *@
+<section class="cta-section">
+    <div class="container text-center" style="position:relative;z-index:2;">
+        <h2 style="font-size:clamp(28px,4vw,46px);color:#fff;margin-bottom:16px;">
+            Готові знайти свій дім?
+        </h2>
+        <p style="color:rgba(255,255,255,.6);font-size:16px;
+                  max-width:480px;margin:0 auto 36px;">
+            Перегляньте наш каталог або залиште заявку —
+            ми зв'яжемось з вами протягом дня.
+        </p>
+        <a href="/Objects" class="btn btn-gold btn-lg px-5">
+            <i class="bi bi-building me-2"></i>
+            Переглянути каталог
+        </a>
+    </div>
+</section>

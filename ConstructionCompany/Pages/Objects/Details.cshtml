@@ -1,0 +1,229 @@
+@page "{id:int}"
+@model ConstructionCompany.Pages.Objects.DetailsModel
+@{
+    ViewData["Title"] = Model.Object.Title;
+    var isCommercial = !string.IsNullOrEmpty(Model.Object.CommercialType);
+}
+
+<div class="container py-4">
+
+    <a href="/Objects" class="btn btn-outline-secondary btn-sm mb-4">
+        ← Назад до каталогу
+    </a>
+
+    <div class="row g-4">
+
+        <div class="col-md-7">
+            @if (Model.Object.Photos.Any())
+            {
+                <div id="photoCarousel" class="carousel slide shadow rounded"
+                     data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        @for (int i = 0; i < Model.Object.Photos.Count; i++)
+                        {
+                            <div class="carousel-item @(i == 0 ? "active" : "")">
+                                <img src="@Model.Object.Photos.ElementAt(i).FilePath"
+                                     class="d-block w-100 rounded"
+                                     style="height:420px;object-fit:cover;"
+                                     alt="@Model.Object.Photos.ElementAt(i).AltText" />
+                            </div>
+                        }
+                    </div>
+                    @if (Model.Object.Photos.Count > 1)
+                    {
+                        <button class="carousel-control-prev" type="button"
+                                data-bs-target="#photoCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button"
+                                data-bs-target="#photoCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="bg-light rounded d-flex align-items-center
+                            justify-content-center" style="height:420px;">
+                    <i class="bi bi-image text-muted fs-1"></i>
+                </div>
+            }
+        </div>
+
+        <div class="col-md-5">
+
+            <div class="d-flex gap-2 mb-3 flex-wrap">
+                <span class="badge @Model.Object.BuildingStatusBadgeClass"
+                      style="font-size:13px;padding:6px 14px;">
+                    @Model.Object.BuildingStatusDisplay
+                </span>
+                <span class="badge @Model.Object.SaleStatusBadgeClass"
+                      style="font-size:13px;padding:6px 14px;">
+                    @Model.Object.SaleStatusDisplay
+                </span>
+                @if (isCommercial)
+                {
+                    <span class="badge bg-dark"
+                          style="font-size:13px;padding:6px 14px;">
+                        <i class="bi bi-shop me-1"></i>
+                        @Model.Object.CommercialTypeDisplay
+                    </span>
+                }
+            </div>
+
+            <h2 class="fw-bold">@Model.Object.Title</h2>
+
+            <p class="text-muted">
+                <i class="bi bi-geo-alt"></i> @Model.Object.Address
+            </p>
+
+            @if (Model.Object.DateDisplay != null)
+            {
+                <div class="mb-3 p-2 rounded"
+                     style="background:rgba(201,168,76,.1);
+                            border-left:3px solid var(--bd-gold);">
+                    <span style="color:var(--bd-gold);font-weight:600;font-size:14px;">
+                        <i class="bi bi-calendar3 me-1"></i>
+                        @Model.Object.DateDisplay
+                    </span>
+                </div>
+            }
+
+            <div class="my-3">
+                <div style="font-family:var(--font-display);font-size:28px;
+                             font-weight:700;color:var(--bd-navy);">
+                    @Model.Object.PriceDisplay
+                </div>
+                @if (Model.Object.PriceType == "PerSqM")
+                {
+                    <div class="text-muted small">
+                        Орієнтовна вартість:
+                        <strong>
+                            @((Model.Object.Price * Model.Object.Area).ToString("N0")) грн
+                        </strong>
+                    </div>
+                }
+            </div>
+
+            @* ── Характеристики ───────────────────────────────── *@
+            <table class="table table-borderless table-sm">
+                <tbody>
+                    <tr>
+                        <td class="text-muted">Категорія</td>
+                        <td><strong>@Model.Object.Category.Name</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">Площа</td>
+                        <td><strong>@Model.Object.Area м²</strong></td>
+                    </tr>
+                    @if (Model.Object.Rooms.HasValue && !isCommercial)
+                    {
+                        <tr>
+                            <td class="text-muted">Кімнат</td>
+                            <td><strong>@Model.Object.Rooms</strong></td>
+                        </tr>
+                    }
+                    @if (Model.Object.Floor.HasValue)
+                    {
+                        <tr>
+                            <td class="text-muted">Поверх</td>
+                            <td>
+                                <strong>
+                                    @Model.Object.Floor / @Model.Object.TotalFloors
+                                </strong>
+                            </td>
+                        </tr>
+                    }
+
+                    @* ── Комерційні параметри ─────────────────── *@
+                    @if (isCommercial)
+                    {
+                        @if (Model.Object.CeilingHeight.HasValue)
+                        {
+                            <tr>
+                                <td class="text-muted">Висота стелі</td>
+                                <td>
+                                    <strong>@Model.Object.CeilingHeight м</strong>
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td class="text-muted">Паркінг</td>
+                            <td>
+                                @if (Model.Object.HasParking)
+                                {
+                                    <span class="text-success fw-bold">
+                                        <i class="bi bi-check-circle me-1"></i>Є
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Немає</span>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-muted">Окремий вхід</td>
+                            <td>
+                                @if (Model.Object.HasSeparateEntrance)
+                                {
+                                    <span class="text-success fw-bold">
+                                        <i class="bi bi-check-circle me-1"></i>Є
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Немає</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (!string.IsNullOrEmpty(Model.Object.Description))
+            {
+                <p class="mt-2" style="line-height:1.7;">
+                    @Model.Object.Description
+                </p>
+            }
+
+            @* ── Кнопка заявки ────────────────────────────────── *@
+            @if (Model.Object.SaleStatus == "Reserved")
+            {
+                <div class="alert alert-warning mt-3 mb-0">
+                    <i class="bi bi-lock me-2"></i>
+                    Цей об'єкт вже зарезервований
+                </div>
+            }
+            else if (Model.Object.BuildingStatus == "InProject")
+            {
+                <a href="/Bookings/Create/@Model.Object.Id"
+                   class="btn btn-outline-primary w-100 mt-3">
+                    <i class="bi bi-chat-dots me-2"></i>
+                    Записатись на консультацію
+                </a>
+            }
+            else if (Model.Object.BuildingStatus == "UnderConstruction"
+                     && Model.Object.SaleStatus == "Available")
+            {
+                <a href="/Bookings/Create/@Model.Object.Id"
+                   class="btn btn-primary w-100 mt-3">
+                    <i class="bi bi-bookmark me-2"></i>
+                    Забронювати на етапі будівництва
+                </a>
+            }
+            else if (Model.Object.BuildingStatus == "Commissioned"
+                     && Model.Object.SaleStatus == "Available")
+            {
+                <a href="/Bookings/Create/@Model.Object.Id"
+                   class="btn btn-primary w-100 mt-3">
+                    <i class="bi bi-envelope me-2"></i>
+                    @(isCommercial ? "Залишити заявку" : "Подати заявку")
+                </a>
+            }
+
+        </div>
+    </div>
+</div>

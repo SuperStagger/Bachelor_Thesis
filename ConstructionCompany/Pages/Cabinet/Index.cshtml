@@ -1,0 +1,136 @@
+@page
+@model ConstructionCompany.Pages.Cabinet.IndexModel
+@{
+    ViewData["Title"] = "Особистий кабінет";
+}
+
+<div class="container py-4">
+
+    <h2 class="fw-bold mb-4">Особистий кабінет</h2>
+
+    <div class="row g-4">
+
+        @* ── Інформація про користувача ───────────────────────── *@
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center p-4">
+
+                    <div class="rounded-circle bg-primary text-white d-flex
+                                align-items-center justify-content-center mx-auto mb-3"
+                         style="width:80px;height:80px;font-size:2rem;">
+                        @Model.CurrentUser.FirstName.Substring(0, 1).ToUpper()
+                    </div>
+
+                    <h5 class="fw-bold">@Model.CurrentUser.FullName</h5>
+                    <p class="text-muted small mb-1">
+                        <i class="bi bi-envelope"></i> @Model.CurrentUser.Email
+                    </p>
+                    @if (!string.IsNullOrEmpty(Model.CurrentUser.Phone))
+                    {
+                        <p class="text-muted small mb-1">
+                            <i class="bi bi-telephone"></i> @Model.CurrentUser.Phone
+                        </p>
+                    }
+                    <p class="text-muted small">
+                        <i class="bi bi-calendar"></i>
+                        Зареєстрований:
+                        @Model.CurrentUser.CreatedAt.ToString("dd.MM.yyyy")
+                    </p>
+
+                    <a href="/Cabinet/Edit"
+                       class="btn btn-outline-primary btn-sm w-100 mt-2">
+                        <i class="bi bi-pencil"></i> Редагувати профіль
+                    </a>
+
+                    <a href="/Cabinet/Notifications"
+                       class="btn btn-sm w-100 mt-2
+                              @(Model.UnreadCount > 0
+                                  ? "btn-warning"
+                                  : "btn-outline-secondary")">
+                        <i class="bi bi-bell@(Model.UnreadCount > 0
+                            ? "-fill" : "")"></i>
+                        Сповіщення
+                        @if (Model.UnreadCount > 0)
+                        {
+                            <span class="badge bg-dark ms-1">
+                                @Model.UnreadCount
+                            </span>
+                        }
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        @* ── Список заявок ────────────────────────────────────── *@
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white fw-bold py-3">
+                    <i class="bi bi-list-check"></i>
+                    Мої заявки (@Model.Bookings.Count)
+                </div>
+                <div class="card-body p-0">
+
+                    @if (!Model.Bookings.Any())
+                    {
+                        <div class="text-center py-5 text-muted">
+                            <i class="bi bi-inbox fs-1"></i>
+                            <p class="mt-3">У вас поки немає заявок</p>
+                            <a href="/Objects"
+                               class="btn btn-outline-primary btn-sm">
+                                Переглянути каталог
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Об'єкт</th>
+                                        <th>Тип</th>
+                                        <th>Статус</th>
+                                        <th>Дата</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var booking in Model.Bookings)
+                                    {
+                                        var badgeClass =
+                                            booking.BookingStatus == "New"
+                                                ? "bg-primary"
+                                            : booking.BookingStatus == "InProgress"
+                                                ? "bg-warning text-dark"
+                                            : booking.BookingStatus == "Completed"
+                                                ? "bg-success"
+                                            : "bg-secondary";
+                                        <tr>
+                                            <td>
+                                                <a href="/Objects/Details/@booking.ObjectId"
+                                                   class="text-decoration-none fw-semibold">
+                                                    @booking.RealEstateObject.Title
+                                                </a>
+                                            </td>
+                                            <td>@booking.BookingTypeDisplay</td>
+                                            <td>
+                                                <span class="badge @badgeClass">
+                                                    @booking.BookingStatusDisplay
+                                                </span>
+                                            </td>
+                                            <td class="text-muted small">
+                                                @booking.CreatedAt.ToString("dd.MM.yyyy")
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,278 @@
+@page
+@model ConstructionCompany.Pages.Projects.IndexModel
+@{
+    ViewData["Title"] = "Наші проекти";
+}
+
+<style>
+    .project-hero {
+        background: linear-gradient(135deg,
+            var(--bd-navy) 0%, var(--bd-navy-light) 100%);
+        padding: 64px 0 48px;
+        position: relative;
+        overflow: hidden;
+    }
+    .project-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+            45deg, transparent, transparent 40px,
+            rgba(255,255,255,.015) 40px,
+            rgba(255,255,255,.015) 41px);
+    }
+    .project-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -1px; left: 0; right: 0;
+        height: 50px;
+        background: var(--bd-cream);
+        clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .sold-badge {
+        background: rgba(255,255,255,.15);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(255,255,255,.3);
+    }
+    .project-card {
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 16px rgba(0,0,0,.07);
+        transition: transform .25s, box-shadow .25s;
+        background: #fff;
+    }
+    .project-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 32px rgba(0,0,0,.12);
+    }
+    .project-card .card-img-top {
+        height: 210px;
+        object-fit: cover;
+        filter: saturate(0.85);
+    }
+    .stat-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--bd-cream);
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 12px;
+        color: var(--bd-gray);
+    }
+</style>
+
+@* ── Hero ───────────────────────────────────────────────────── *@
+<section class="project-hero">
+    <div class="container" style="position:relative;z-index:2;">
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <span class="sold-badge">
+                <i class="bi bi-check-circle me-1"></i>Реалізовані
+            </span>
+        </div>
+        <h1 style="font-size:clamp(30px,5vw,52px);color:#fff;margin-bottom:12px;">
+            Наші проекти
+        </h1>
+        <p style="color:rgba(255,255,255,.65);font-size:16px;
+                   max-width:520px;line-height:1.7;">
+            Завершені об'єкти Basis Development — кожен з них знайшов
+            своїх щасливих власників. Це наша гордість і підтвердження
+            надійності.
+        </p>
+
+        @if (Model.Projects.Any())
+        {
+            <div class="d-flex gap-4 mt-4">
+                <div>
+                    <div style="font-family:var(--font-display);font-size:36px;
+                                 color:#fff;font-weight:700;line-height:1;">
+                        @Model.Projects.Count
+                    </div>
+                    <div style="font-size:12px;color:rgba(255,255,255,.5);
+                                 text-transform:uppercase;letter-spacing:.06em;">
+                        Реалізованих об'єктів
+                    </div>
+                </div>
+                <div>
+                    <div style="font-family:var(--font-display);font-size:36px;
+                                 color:var(--bd-gold);font-weight:700;line-height:1;">
+                        100%
+                    </div>
+                    <div style="font-size:12px;color:rgba(255,255,255,.5);
+                                 text-transform:uppercase;letter-spacing:.06em;">
+                        Задоволених клієнтів
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+@* ── Сітка проектів ─────────────────────────────────────────── *@
+<section style="padding:60px 0;background:var(--bd-cream);">
+    <div class="container">
+
+        @if (!Model.Projects.Any())
+        {
+            <div class="text-center py-5">
+                <i class="bi bi-building fs-1 text-muted"></i>
+                <p class="mt-3 text-muted fs-5">
+                    Реалізованих проектів ще немає
+                </p>
+                <a href="/Objects" class="btn btn-primary mt-2">
+                    Переглянути поточні пропозиції
+                </a>
+            </div>
+        }
+        else
+        {
+            @* Групуємо по категоріях *@
+            @foreach (var group in Model.Projects
+                .GroupBy(p => p.Category.Name)
+                .OrderBy(g => g.Key))
+            {
+                <div class="mb-5">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <h3 style="color:var(--bd-navy);font-size:22px;margin:0;">
+                            @group.Key
+                        </h3>
+                        <span class="badge"
+                              style="background:var(--bd-gold);color:var(--bd-navy);
+                                     font-size:12px;">
+                            @group.Count() об'єктів
+                        </span>
+                        <div style="flex:1;height:1px;background:var(--bd-border);"></div>
+                    </div>
+
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        @foreach (var obj in group)
+                        {
+                            <div class="col">
+                                <div class="project-card card h-100">
+
+                                    <div style="position:relative;">
+                                        @if (obj.MainPhoto != null)
+                                        {
+                                            <img src="@obj.MainPhoto.FilePath"
+                                                 class="card-img-top"
+                                                 alt="@obj.MainPhoto.AltText" />
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-light d-flex
+                                                        align-items-center
+                                                        justify-content-center"
+                                                 style="height:210px;">
+                                                <i class="bi bi-image
+                                                          text-muted fs-1"></i>
+                                            </div>
+                                        }
+                                        @* Плашка "Продано" поверх фото *@
+                                        <div style="position:absolute;
+                                                    inset:0;
+                                                    background:rgba(11,31,58,.35);
+                                                    display:flex;
+                                                    align-items:flex-start;
+                                                    justify-content:flex-end;
+                                                    padding:12px;">
+                                            <span class="sold-badge">
+                                                <i class="bi bi-check2-circle me-1"></i>
+                                                Реалізовано
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body">
+
+                                        <h5 class="fw-bold mb-1"
+                                            style="color:var(--bd-navy);">
+                                            @obj.Title
+                                        </h5>
+
+                                        <p class="text-muted small mb-3">
+                                            <i class="bi bi-geo-alt me-1"></i>
+                                            @obj.Address
+                                        </p>
+
+                                        <div class="d-flex flex-wrap gap-2 mb-3">
+                                            @if (obj.Area > 0)
+                                            {
+                                                <span class="stat-pill">
+                                                    <i class="bi bi-aspect-ratio"></i>
+                                                    @obj.Area м²
+                                                </span>
+                                            }
+                                            @if (obj.Rooms.HasValue)
+                                            {
+                                                <span class="stat-pill">
+                                                    <i class="bi bi-door-open"></i>
+                                                    @obj.Rooms кімн.
+                                                </span>
+                                            }
+                                            @if (obj.Floor.HasValue)
+                                            {
+                                                <span class="stat-pill">
+                                                    <i class="bi bi-layers"></i>
+                                                    @obj.Floor/@obj.TotalFloors пов.
+                                                </span>
+                                            }
+                                            <span class="stat-pill">
+                                                <i class="bi bi-calendar3"></i>
+                                                @(obj.ProjectYear.HasValue
+                                                    ? obj.ProjectYear.ToString()
+                                                    : "—")
+                                            </span>
+                                        </div>
+
+                                        @* Ціна НЕ відображається — тільки статус *@
+                                        <div class="d-flex align-items-center
+                                                    gap-2 pt-2"
+                                             style="border-top:1px solid
+                                                    var(--bd-border);">
+                                            <span class="badge @obj.BuildingStatusBadgeClass">
+                                                @obj.BuildingStatusDisplay
+                                            </span>
+                                            <span class="text-muted small ms-auto">
+                                                <i class="bi bi-person-check me-1"></i>
+                                                Знайшов власника
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+</section>
+
+@* ── CTA ─────────────────────────────────────────────────────── *@
+<section style="background:linear-gradient(135deg,
+                var(--bd-navy),var(--bd-navy-light));
+                padding:64px 0;">
+    <div class="container text-center">
+        <h2 style="color:#fff;font-size:clamp(24px,3.5vw,38px);
+                    margin-bottom:14px;">
+            Хочете стати наступним щасливим власником?
+        </h2>
+        <p style="color:rgba(255,255,255,.6);font-size:15px;
+                   max-width:440px;margin:0 auto 32px;">
+            Перегляньте поточні пропозиції Basis Development
+        </p>
+        <a href="/Objects" class="btn btn-gold btn-lg px-5">
+            <i class="bi bi-building me-2"></i>
+            Переглянути каталог
+        </a>
+    </div>
+</section>

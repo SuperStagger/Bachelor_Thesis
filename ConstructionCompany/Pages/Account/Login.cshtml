@@ -1,0 +1,56 @@
+@* ════════════════════════════════════════════════════════════════
+   Файл: Pages/Account/Login.cshtml
+   ════════════════════════════════════════════════════════════════ *@
+@page
+@model ConstructionCompany.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Вхід";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+
+                    <h3 class="fw-bold mb-4 text-center">Вхід в систему</h3>
+
+                    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                    {
+                        <div class="alert alert-danger">@Model.ErrorMessage</div>
+                    }
+
+                    <form method="post">
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="Email" class="form-control"
+                                   value="@Model.Email" required
+                                   placeholder="your@email.com" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Пароль</label>
+                            <input type="password" name="Password"
+                                   class="form-control" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mt-2">
+                            Увійти
+                        </button>
+
+                    </form>
+
+                    <hr class="my-3" />
+                    <p class="text-center text-muted mb-0">
+                        Немає акаунту?
+                        <a href="/Account/Register">Зареєструватися</a>
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

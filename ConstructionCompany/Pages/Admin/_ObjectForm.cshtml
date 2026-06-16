@@ -1,0 +1,163 @@
+@* Файл: Pages/Admin/_ObjectForm.cshtml *@
+@model ConstructionCompany.Pages.Admin.ObjectsModel
+
+<input type="hidden" name="EditObject.Id" value="@Model.EditObject.Id" />
+
+<div class="row g-3">
+
+    <div class="col-12">
+        <label class="form-label fw-semibold">Назва *</label>
+        <input type="text" name="EditObject.Title" class="form-control"
+               value="@Model.EditObject.Title" required />
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label fw-semibold">Категорія *</label>
+        <select name="EditObject.CategoryId" class="form-select" required>
+            <option value="">Оберіть категорію</option>
+            @foreach (var cat in Model.Categories)
+            {
+                <option value="@cat.Value"
+                    selected="@(Model.EditObject.CategoryId.ToString() == cat.Value)">
+                    @cat.Text
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label fw-semibold">Стан будівництва *</label>
+        <select name="EditObject.BuildingStatus" class="form-select">
+            <option value="InProject"
+                selected="@(Model.EditObject.BuildingStatus == "InProject")">
+                В проекті
+            </option>
+            <option value="UnderConstruction"
+                selected="@(Model.EditObject.BuildingStatus == "UnderConstruction")">
+                Будується
+            </option>
+            <option value="Commissioned"
+                selected="@(Model.EditObject.BuildingStatus == "Commissioned")">
+                Здано в експлуатацію
+            </option>
+        </select>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label fw-semibold">Статус продажу *</label>
+        <select name="EditObject.SaleStatus" class="form-select">
+            <option value="Available"
+                selected="@(Model.EditObject.SaleStatus == "Available")">
+                Доступний
+            </option>
+            <option value="Reserved"
+                selected="@(Model.EditObject.SaleStatus == "Reserved")">
+                Зарезервований
+            </option>
+            <option value="Sold"
+                selected="@(Model.EditObject.SaleStatus == "Sold")">
+                Проданий
+            </option>
+        </select>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label fw-semibold">Видимість</label>
+        <div class="form-check form-switch mt-2">
+            <input class="form-check-input" type="checkbox"
+                   name="EditObject.IsHidden"
+                   id="isHiddenCheck"
+                   value="true"
+                   @(Model.EditObject.IsHidden ? "checked" : "") />
+            <label class="form-check-label" for="isHiddenCheck">
+                Приховати з каталогу (об'єкт на уточненні)
+            </label>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label fw-semibold">Ціна *</label>
+        <input type="number" name="EditObject.Price" class="form-control"
+               value="@Model.EditObject.Price" required min="0" step="1000" />
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label fw-semibold">Тип ціни *</label>
+        <select name="EditObject.PriceType" class="form-select">
+            <option value="PerObject"
+                selected="@(Model.EditObject.PriceType == "PerObject")">
+                За об'єкт (грн)
+            </option>
+            <option value="PerSqM"
+                selected="@(Model.EditObject.PriceType == "PerSqM")">
+                За м² (грн/м²)
+            </option>
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label fw-semibold">Площа (м²) *</label>
+        <input type="number" name="EditObject.Area" class="form-control"
+               value="@Model.EditObject.Area" required min="1" step="0.1" />
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label fw-semibold">
+            Рік <span class="text-muted fw-normal small">(початку/здачі)</span>
+        </label>
+        <input type="number" name="EditObject.ProjectYear" class="form-control"
+               value="@Model.EditObject.ProjectYear"
+               min="2020" max="2035" placeholder="напр. 2026" />
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label fw-semibold">
+            Квартал здачі <span class="text-muted fw-normal small">(1-4)</span>
+        </label>
+        <select name="EditObject.ProjectQuarter" class="form-select">
+            <option value="">Не вказано</option>
+            <option value="1" selected="@(Model.EditObject.ProjectQuarter == 1)">I квартал</option>
+            <option value="2" selected="@(Model.EditObject.ProjectQuarter == 2)">II квартал</option>
+            <option value="3" selected="@(Model.EditObject.ProjectQuarter == 3)">III квартал</option>
+            <option value="4" selected="@(Model.EditObject.ProjectQuarter == 4)">IV квартал</option>
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label fw-semibold">Поверх</label>
+        <input type="number" name="EditObject.Floor" class="form-control"
+               value="@Model.EditObject.Floor" min="1" />
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label fw-semibold">Всього поверхів</label>
+        <input type="number" name="EditObject.TotalFloors" class="form-control"
+               value="@Model.EditObject.TotalFloors" min="1" />
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label fw-semibold">Кімнат</label>
+        <input type="number" name="EditObject.Rooms" class="form-control"
+               value="@Model.EditObject.Rooms" min="1" />
+    </div>
+
+    <div class="col-12">
+        <label class="form-label fw-semibold">Адреса *</label>
+        <input type="text" name="EditObject.Address" class="form-control"
+               value="@Model.EditObject.Address" required />
+    </div>
+
+    <div class="col-12">
+        <label class="form-label fw-semibold">Опис</label>
+        <textarea name="EditObject.Description" class="form-control"
+                  rows="3">@Model.EditObject.Description</textarea>
+    </div>
+
+    <div class="col-12">
+        <label class="form-label fw-semibold">Фотографії</label>
+        <input type="file" name="Photos" class="form-control"
+               multiple accept="image/*" />
+        <div class="form-text">Перше фото стане головним.</div>
+    </div>
+
+</div>

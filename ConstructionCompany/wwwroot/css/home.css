@@ -1,0 +1,156 @@
+﻿    /* ── Hero ──────────────────────────────────────────────── */
+    .hero {
+        background: linear-gradient(135deg,
+            var(--bd-navy) 0%,
+            var(--bd-navy-light) 60%,
+            #1a3a5c 100%);
+        min-height: 88vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(ellipse 60% 80% at 80% 50%,
+                rgba(201,168,76,.12) 0%, transparent 70%),
+            repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 40px,
+                rgba(255,255,255,.015) 40px,
+                rgba(255,255,255,.015) 41px
+            );
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-eyebrow {
+        font-size: 12px;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        color: var(--bd-gold);
+        font-weight: 700;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .hero-eyebrow::before {
+        content: '';
+        width: 32px;
+        height: 2px;
+        background: var(--bd-gold);
+    }
+    .hero h1 {
+        font-size: clamp(38px, 6vw, 72px);
+        color: #fff;
+        line-height: 1.1;
+        margin-bottom: 24px;
+    }
+    .hero h1 em {
+        font-style: normal;
+        color: var(--bd-gold);
+    }
+    .hero-desc {
+        font-size: 17px;
+        color: rgba(255,255,255,.65);
+        line-height: 1.7;
+        max-width: 480px;
+        margin-bottom: 40px;
+    }
+    .hero-stats {
+        display: flex;
+        gap: 40px;
+        margin-top: 56px;
+        padding-top: 40px;
+        border-top: 1px solid rgba(255,255,255,.1);
+    }
+    .hero-stat-num {
+        font-family: var(--font-display);
+        font-size: 36px;
+        color: #fff;
+        line-height: 1;
+    }
+    .hero-stat-num span { color: var(--bd-gold); }
+    .hero-stat-label {
+        font-size: 12px;
+        color: rgba(255,255,255,.45);
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        margin-top: 4px;
+    }
+
+    /* ── Декоративна права частина ─────────────────────────── */
+    .hero-visual {
+        position: relative;
+        height: 500px;
+    }
+    .hero-card-float {
+        background: rgba(255,255,255,.06);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255,255,255,.12);
+        border-radius: 12px;
+        padding: 20px 24px;
+        position: absolute;
+        color: #fff;
+    }
+    .hcf-1 {
+        top: 40px; right: 20px;
+        width: 220px;
+        animation: floatUp 6s ease-in-out infinite;
+    }
+    .hcf-2 {
+        top: 200px; right: 80px;
+        width: 180px;
+        animation: floatUp 6s ease-in-out infinite 2s;
+    }
+    .hcf-3 {
+        top: 340px; right: 10px;
+        width: 200px;
+        animation: floatUp 6s ease-in-out infinite 4s;
+    }
+
+    @@keyframes floatUp {
+        0%, 100% { transform: translateY(0); }
+        50%       { transform: translateY(-10px); }
+    }
+    .hcf-label { font-size: 10px; color: var(--bd-gold); letter-spacing:.1em;
+                 text-transform:uppercase; margin-bottom:6px; }
+    .hcf-value { font-family: var(--font-display); font-size: 22px; }
+    .hcf-sub   { font-size: 12px; color: rgba(255,255,255,.5); margin-top:2px; }
+
+    /* ── Переваги ───────────────────────────────────────────── */
+    .features { padding: 96px 0; background: #fff; }
+    .feature-icon {
+        width: 56px; height: 56px;
+        background: linear-gradient(135deg, var(--bd-navy), var(--bd-navy-light));
+        border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 24px; color: var(--bd-gold);
+        margin-bottom: 20px;
+    }
+    .feature-title {
+        font-family: var(--font-display);
+        font-size: 20px;
+        color: var(--bd-navy);
+        margin-bottom: 10px;
+    }
+    .feature-desc { color: var(--bd-gray); line-height: 1.7; font-size: 14px; }
+
+    /* ── CTA секція ─────────────────────────────────────────── */
+    .cta-section {
+        background: linear-gradient(135deg, var(--bd-navy), var(--bd-navy-light));
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+    }
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: -50%; right: -10%;
+        width: 500px; height: 500px;
+        border-radius: 50%;
+        background: rgba(201,168,76,.08);
+    }

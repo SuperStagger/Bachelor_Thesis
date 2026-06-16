@@ -1,0 +1,353 @@
+@page
+@model ConstructionCompany.Pages.AboutModel
+@{
+    ViewData["Title"] = "Про компанію";
+}
+
+<style>
+    .about-hero {
+        background: linear-gradient(135deg,
+            var(--bd-navy) 0%,
+            var(--bd-navy-light) 100%);
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+    }
+    .about-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 40px,
+            rgba(255,255,255,.015) 40px,
+            rgba(255,255,255,.015) 41px
+        );
+    }
+    .about-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -1px; left: 0; right: 0;
+        height: 60px;
+        background: var(--bd-cream);
+        clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .section-eyebrow {
+        font-size: 11px;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        color: var(--bd-gold);
+        font-weight: 700;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .section-eyebrow::before {
+        content: '';
+        width: 28px; height: 2px;
+        background: var(--bd-gold);
+    }
+    .timeline-item {
+        display: flex;
+        gap: 24px;
+        padding-bottom: 36px;
+        position: relative;
+    }
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: 19px; top: 40px;
+        bottom: 0; width: 2px;
+        background: var(--bd-border);
+    }
+    .timeline-item:last-child::before { display: none; }
+    .timeline-dot {
+        width: 40px; height: 40px;
+        border-radius: 50%;
+        background: var(--bd-navy);
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+        font-size: 12px; font-weight: 700;
+        color: var(--bd-gold);
+        font-family: var(--font-display);
+    }
+    .cert-card {
+        background: #fff;
+        border: 1px solid var(--bd-border);
+        border-radius: 10px;
+        padding: 20px;
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        height: 100%;
+    }
+    .cert-icon {
+        width: 48px; height: 48px;
+        background: linear-gradient(135deg, var(--bd-navy), var(--bd-navy-light));
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 22px; color: var(--bd-gold);
+        flex-shrink: 0;
+    }
+</style>
+
+@* ── Hero ───────────────────────────────────────────────────── *@
+<section class="about-hero">
+    <div class="container" style="position:relative;z-index:2;">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="section-eyebrow" style="color:var(--bd-gold);">
+                    Про нас
+                </div>
+                <h1 style="font-size:clamp(32px,5vw,56px);color:#fff;
+                            margin-bottom:20px;">
+                    Basis Development
+                </h1>
+                <p style="font-size:17px;color:rgba(255,255,255,.65);
+                           line-height:1.75;max-width:520px;">
+                    Будівельна компанія з багаторічним досвідом зведення
+                    житлової та комерційної нерухомості в Черкаській області.
+                    Ми не просто будуємо — ми створюємо простір для життя.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* ── Цифри ──────────────────────────────────────────────────── *@
+<section style="padding:64px 0;background:var(--bd-cream);">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-6 col-md-3">
+                <div style="font-family:var(--font-display);font-size:52px;
+                             font-weight:700;color:var(--bd-navy);line-height:1;">
+                    8<span style="color:var(--bd-gold);">+</span>
+                </div>
+                <div style="font-size:13px;color:var(--bd-gray);
+                             text-transform:uppercase;letter-spacing:.08em;
+                             margin-top:6px;">
+                    Років на ринку
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div style="font-family:var(--font-display);font-size:52px;
+                             font-weight:700;color:var(--bd-navy);line-height:1;">
+                    24<span style="color:var(--bd-gold);">+</span>
+                </div>
+                <div style="font-size:13px;color:var(--bd-gray);
+                             text-transform:uppercase;letter-spacing:.08em;
+                             margin-top:6px;">
+                    Зданих об'єктів
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div style="font-family:var(--font-display);font-size:52px;
+                             font-weight:700;color:var(--bd-navy);line-height:1;">
+                    500<span style="color:var(--bd-gold);">+</span>
+                </div>
+                <div style="font-size:13px;color:var(--bd-gray);
+                             text-transform:uppercase;letter-spacing:.08em;
+                             margin-top:6px;">
+                    Щасливих родин
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div style="font-family:var(--font-display);font-size:52px;
+                             font-weight:700;color:var(--bd-navy);line-height:1;">
+                    100<span style="color:var(--bd-gold);">%</span>
+                </div>
+                <div style="font-size:13px;color:var(--bd-gray);
+                             text-transform:uppercase;letter-spacing:.08em;
+                             margin-top:6px;">
+                    Зданих в строк
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* ── Місія ───────────────────────────────────────────────────── *@
+<section style="padding:80px 0;background:#fff;">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="section-eyebrow">Наша місія</div>
+                <h2 style="font-size:clamp(26px,3.5vw,40px);
+                            color:var(--bd-navy);margin-bottom:20px;">
+                    Будуємо не просто стіни —<br />
+                    будуємо майбутнє
+                </h2>
+                <p style="color:var(--bd-gray);line-height:1.8;font-size:15px;
+                           margin-bottom:16px;">
+                    Basis Development — це команда професіоналів, які вірять що
+                    якісне житло має бути доступним. Кожен наш проект —
+                    це поєднання сучасних технологій будівництва, продуманого
+                    планування та уважного ставлення до потреб майбутніх мешканців.
+                </p>
+                <p style="color:var(--bd-gray);line-height:1.8;font-size:15px;">
+                    Ми самостійно зводимо всі об'єкти — від фундаменту до
+                    фінішного оздоблення — що дозволяє повністю контролювати
+                    якість на кожному етапі будівництва.
+                </p>
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+                <div class="row g-3">
+                    @foreach (var item in new[] {
+                        ("bi-award", "Власне виробництво",
+                         "Використовуємо власні будівельні матеріали"),
+                        ("bi-clock-history", "Здача в строк",
+                         "100% об'єктів здано без затримок"),
+                        ("bi-person-check", "Гарантія 5 років",
+                         "Офіційна гарантія на конструктив"),
+                        ("bi-file-earmark-check", "Юридична чистота",
+                         "Повний пакет документів при передачі"),
+                    })
+                    {
+                        <div class="col-6">
+                            <div style="background:var(--bd-cream);border-radius:10px;
+                                         padding:20px;">
+                                <i class="bi @item.Item1"
+                                   style="font-size:28px;color:var(--bd-gold);
+                                          display:block;margin-bottom:10px;"></i>
+                                <div style="font-weight:700;font-size:14px;
+                                             color:var(--bd-navy);margin-bottom:4px;">
+                                    @item.Item2
+                                </div>
+                                <div style="font-size:12px;color:var(--bd-gray);
+                                             line-height:1.5;">
+                                    @item.Item3
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* ── Хронологія ──────────────────────────────────────────────── *@
+<section style="padding:80px 0;background:var(--bd-cream);">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 mb-5 mb-lg-0">
+                <div class="section-eyebrow">Наша історія</div>
+                <h2 style="font-size:clamp(26px,3.5vw,40px);color:var(--bd-navy);">
+                    Шлях від ідеї<br />до лідерства
+                </h2>
+            </div>
+            <div class="col-lg-6 offset-lg-1">
+                @foreach (var item in new[] {
+                    ("2016", "Заснування компанії",
+                     "Basis Development розпочала роботу з невеликою командою з 12 осіб та амбітною метою — змінити стандарти будівництва в регіоні."),
+                    ("2018", "Перший житловий комплекс",
+                     "Здано перший ЖК «Basis City» на 96 квартир. Всі квартири продані ще до завершення будівництва."),
+                    ("2020", "Розширення напрямків",
+                     "Запуск напрямку комерційної нерухомості. Зведено 3 офісних центри та торгово-розважальний комплекс."),
+                    ("2023", "Цифрова трансформація",
+                     "Запуск власної інформаційної системи для покупців — зручний онлайн-каталог та подача заявок без візиту в офіс."),
+                    ("2026", "Сьогодні",
+                     "Понад 24 завершених об'єктів, 500+ задоволених клієнтів та нові проекти на стадії будівництва."),
+                })
+                {
+                    <div class="timeline-item">
+                        <div class="timeline-dot">@item.Item1</div>
+                        <div style="padding-top:8px;">
+                            <div style="font-weight:700;color:var(--bd-navy);
+                                         font-size:16px;margin-bottom:6px;">
+                                @item.Item2
+                            </div>
+                            <div style="color:var(--bd-gray);font-size:14px;
+                                         line-height:1.7;">
+                                @item.Item3
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+@* ── Ліцензії та сертифікати ─────────────────────────────────── *@
+<section style="padding:80px 0;background:#fff;">
+    <div class="container">
+        <div class="text-center mb-5">
+            <div class="section-eyebrow justify-content-center">
+                Документи
+            </div>
+            <h2 style="font-size:clamp(24px,3vw,36px);color:var(--bd-navy);">
+                Ліцензії та сертифікати
+            </h2>
+        </div>
+        <div class="row g-3">
+            @foreach (var item in new[] {
+                ("bi-patch-check-fill",
+                 "Ліцензія забудовника",
+                 "Серія АВ №123456",
+                 "Видана Державною архітектурно-будівельною інспекцією України"),
+                ("bi-shield-fill-check",
+                 "ISO 9001:2015",
+                 "Система менеджменту якості",
+                 "Сертифікат відповідності міжнародному стандарту якості"),
+                ("bi-file-earmark-text-fill",
+                 "Дозвіл на будівництво",
+                 "Клас наслідків СС2",
+                 "Об'єкти підвищеного рівня відповідальності"),
+                ("bi-award-fill",
+                 "Член AFDU",
+                 "Асоціація забудовників",
+                 "Асоціація фахівців з нерухомості та девелопменту України"),
+            })
+            {
+                <div class="col-md-6 col-lg-3">
+                    <div class="cert-card">
+                        <div class="cert-icon">
+                            <i class="bi @item.Item1"></i>
+                        </div>
+                        <div>
+                            <div style="font-weight:700;color:var(--bd-navy);
+                                         font-size:14px;margin-bottom:2px;">
+                                @item.Item2
+                            </div>
+                            <div style="font-size:12px;color:var(--bd-gold);
+                                         font-weight:600;margin-bottom:4px;">
+                                @item.Item3
+                            </div>
+                            <div style="font-size:12px;color:var(--bd-gray);
+                                         line-height:1.5;">
+                                @item.Item4
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@* ── CTA ─────────────────────────────────────────────────────── *@
+<section style="background:linear-gradient(135deg,var(--bd-navy),var(--bd-navy-light));
+                padding:72px 0;">
+    <div class="container text-center">
+        <h2 style="font-size:clamp(26px,4vw,42px);color:#fff;margin-bottom:14px;">
+            Готові стати частиною<br />нашої спільноти?
+        </h2>
+        <p style="color:rgba(255,255,255,.6);font-size:15px;
+                  max-width:440px;margin:0 auto 32px;">
+            Перегляньте актуальні пропозиції або залиште заявку —
+            наш менеджер зв'яжеться з вами протягом робочого дня.
+        </p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="/Objects" class="btn btn-gold btn-lg px-5">
+                <i class="bi bi-building me-2"></i>Переглянути об'єкти
+            </a>
+            <a href="/Account/Register"
+               class="btn btn-outline-light btn-lg px-5">
+                Зареєструватись
+            </a>
+        </div>
+    </div>
+</section>
